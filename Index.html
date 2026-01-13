@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Connection Offset Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafafa;
+            color: #1a1a1a;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 15px;
+        }
+
+        .balance-display {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        .balance-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .balance-row:last-child {
+            margin-bottom: 0;
+            padding-top: 24px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .balance-label {
+            font-size: 14px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        .balance-value {
+            font-size: 32px;
+            font-weight: 600;
+        }
+
+        .debt {
+            color: #e74c3c;
+        }
+
+        .offset {
+            color: #27ae60;
+        }
+
+        .net-balance {
+            color: #666;
+        }
+
+        .net-balance.positive {
+            color: #27ae60;
+        }
+
+        .net-balance.negative {
+            color: #e74c3c;
+        }
+
+        .logging-section {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .log-form {
+            display: grid;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: #333;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 12px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            background: white;
+            transition: border-color 0.2s;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #666;
+        }
+
+        .time-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        button {
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #333;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .activity-log {
+            margin-top: 32px;
+        }
+
+        .log-entry {
+            background: #f8f8f8;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .log-entry-info {
+            flex: 1;
+        }
+
+        .log-entry-name {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .log-entry-details {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .log-entry-duration {
+            font-size: 18px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .type-toggle {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .type-btn {
+            flex: 1;
+            padding: 12px;
+            background: #f0f0f0;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .type-btn.active {
+            background: white;
+            border-color: #1a1a1a;
+        }
+
+        .visual-bar {
+            height: 8px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 8px;
+            position: relative;
+        }
+
+        .visual-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #e74c3c 0%, #27ae60 100%);
+            transition: width 0.3s;
+        }
+
+        .recommendations-section {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        .recommendation-card {
+            background: #f8f8f8;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .recommendation-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .recommendation-category {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #e74c3c;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .recommendation-text {
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .recommendation-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .suggestion-tag {
+            background: white;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #333;
+            border: 1.5px solid #e0e0e0;
+        }
+
+        .debt-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .breakdown-card {
+            background: #f8f8f8;
+            padding: 16px;
+            border-radius: 8px;
+        }
+
+        .breakdown-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .breakdown-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: #e74c3c;
+        }
+
+        .breakdown-percentage {
+            font-size: 13px;
+            color: #999;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Connection Offset.</h1>
+            <p class="subtitle">Yup, you're totally connected. But maybe it's time to offset that with real connection.</p>
+            <p class="subtitle">Here's how. Track time spent connected, and calculate real-life offset in real-time.</p>
+        </header>
+
+        <div class="balance-display">
+            <div class="balance-row">
+                <span class="balance-label">Time spent 'connected'</span>
+                <span class="balance-value debt" id="totalDebt">0h 0m</span>
+            </div>
+            <div class="balance-row">
+                <span class="balance-label">Connection Offset</span>
+                <span class="balance-value offset" id="totalOffset">0h 0m</span>
+            </div>
+            <div class="balance-row">
+                <span class="balance-label">Net Balance</span>
+                <span class="balance-value net-balance" id="netBalance">0h 0m</span>
+            </div>
+            <div class="visual-bar">
+                <div class="visual-bar-fill" id="balanceBar" style="width: 50%"></div>
+            </div>
+        </div>
+
+        <div class="recommendations-section" id="recommendationsSection" style="display: none;">
+            <h2>Your Personalized Offset Recommendations</h2>
+            <div id="debtBreakdown"></div>
+            <div id="recommendations"></div>
+        </div>
+
+        <div class="logging-section">
+            <h2>Log Activity</h2>
+            
+            <div class="type-toggle">
+                <div class="type-btn active" onclick="setActivityType('debt')" id="debtBtn">
+                    Connecting time spent
+                </div>
+                <div class="type-btn" onclick="setActivityType('offset')" id="offsetBtn">
+                    Connection Offset
+                </div>
+            </div>
+
+            <form class="log-form" onsubmit="logActivity(event)">
+                <div>
+                    <label for="activity">Activity</label>
+                    <select id="activity" required>
+                        <!-- Debt options -->
+                        <optgroup label="Social Media" id="socialGroup">
+                            <option value="Instagram">Instagram</option>
+                            <option value="TikTok">TikTok</option>
+                            <option value="Facebook">Facebook</option>
+                            <option value="Twitter/X">Twitter/X</option>
+                            <option value="LinkedIn">LinkedIn</option>
+                            <option value="Reddit">Reddit</option>
+                        </optgroup>
+                        <optgroup label="AI Platforms" id="aiGroup">
+                            <option value="ChatGPT">ChatGPT</option>
+                            <option value="Claude">Claude</option>
+                            <option value="Character.ai">Character.ai</option>
+                            <option value="Other AI">Other AI Tool</option>
+                        </optgroup>
+                        <optgroup label="Communication" id="commGroup">
+                            <option value="Slack">Slack</option>
+                            <option value="Email">Email</option>
+                            <option value="Teams">Microsoft Teams</option>
+                            <option value="Discord">Discord</option>
+                        </optgroup>
+                        <optgroup label="Content/Entertainment" id="contentGroup">
+                            <option value="YouTube">YouTube</option>
+                            <option value="Netflix/Streaming">Netflix/Streaming</option>
+                            <option value="Podcasts">Podcasts</option>
+                            <option value="Twitch">Twitch</option>
+                        </optgroup>
+                        <!-- Offset options (hidden by default) -->
+                        <optgroup label="In-Person Connection" id="inPersonGroup" style="display:none;">
+                            <option value="Face-to-face hangout">Face-to-face hangout</option>
+                            <option value="Meal with others">Meal with others</option>
+                            <option value="Phone/video call">Phone/video call (two-way)</option>
+                            <option value="Community event">Community event</option>
+                            <option value="Class/workshop">Class/workshop</option>
+                        </optgroup>
+                        <optgroup label="Third Spaces" id="thirdSpaceGroup" style="display:none;">
+                            <option value="Café/coffee shop">Café/coffee shop</option>
+                            <option value="Library">Library</option>
+                            <option value="Park">Park</option>
+                            <option value="Gym/fitness">Gym/fitness class</option>
+                            <option value="Co-working space">Co-working space</option>
+                        </optgroup>
+                        <optgroup label="Gatherings" id="gatheringGroup" style="display:none;">
+                            <option value="Party/social event">Party/social event</option>
+                            <option value="Religious service">Religious service</option>
+                            <option value="Volunteer work">Volunteer work</option>
+                            <option value="Sports/recreation">Sports/recreation with others</option>
+                            <option value="Creative activity">Creative activity with others</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <div class="time-inputs">
+                    <div>
+                        <label for="hours">Hours</label>
+                        <input type="number" id="hours" min="0" max="24" value="0" required>
+                    </div>
+                    <div>
+                        <label for="minutes">Minutes</label>
+                        <input type="number" id="minutes" min="0" max="59" value="0" required>
+                    </div>
+                </div>
+
+                <button type="submit">Log Activity</button>
+            </form>
+
+            <div class="activity-log">
+                <h2>This Week's Activities</h2>
+                <div id="logList">
+                    <div class="empty-state">No activities logged yet. Start tracking your connection patterns.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let activities = [];
+        let currentType = 'debt';
+
+        // Categorize activities into debt types
+        const debtCategories = {
+            social: ['Instagram', 'TikTok', 'Facebook', 'Twitter/X', 'LinkedIn', 'Reddit'],
+            ai: ['ChatGPT', 'Claude', 'Character.ai', 'Other AI'],
+            parasocial: ['YouTube', 'Netflix/Streaming', 'Podcasts', 'Twitch'],
+            async: ['Slack', 'Email', 'Teams', 'Discord']
+        };
+
+        // Recommendation mappings
+        const recommendations = {
+            social: {
+                label: 'Social Media Debt',
+                description: 'Your social is turning a littttle anti-social. Focus that offset on reciprocal, two-way social interaction.',
+                suggestions: [
+                    'Host or attend a dinner with friends',
+                    'Try a phone call (yes these still exist)',
+                    'Meet someone for coffee',
+                    'Join a group hangout',
+                    'Attend a party or social gathering'
+                ]
+            },
+            ai: {
+                label: 'AI Conversation Debt',
+                description: 'You\'ve been learning from AI. That\'s great. But maybe try absorbing culture and learning with actual humans present.',
+                suggestions: [
+                    'Attend a workshop or class',
+                    'Visit a museum or gallery',
+                    'Join a book club',
+                    'Go to a lecture or talk',
+                    'Participate in a skill-sharing meetup',
+                    'Take an in-person course'
+                ]
+            },
+            parasocial: {
+                label: 'Parasocial Content Debt',
+                description: 'You\'re scrolling your soul away. Get back into spaces where it\'s not just looking at other people\'s lives, you\'re looking at each other.',
+                suggestions: [
+                    'Attend a community event',
+                    'Join an open mic or speaking event',
+                    'Participate in a town hall',
+                    'Go to a group fitness class',
+                    'Join a meetup group',
+                    'Volunteer in your community'
+                ]
+            },
+            async: {
+                label: 'Async Communication Debt',
+                description: 'Too much slack. Meet up in person for a change.',
+                suggestions: [
+                    'Work in a co-working space',
+                    'Have an in-person meeting',
+                    'Collaborate synchronously with others',
+                    'Spend time in shared physical space',
+                    'Join a working session at a café or library'
+                ]
+            }
+        };
+
+        // Load saved data
+        if (localStorage.getItem('connectionActivities')) {
+            activities = JSON.parse(localStorage.getItem('connectionActivities'));
+            updateDisplay();
+        }
+
+        function getCategoryForActivity(activityName) {
+            for (const [category, activities] of Object.entries(debtCategories)) {
+                if (activities.includes(activityName)) {
+                    return category;
+                }
+            }
+            return null;
+        }
+
+        function generateRecommendations() {
+            const debtActivities = activities.filter(a => a.type === 'debt');
+            
+            if (debtActivities.length === 0) {
+                document.getElementById('recommendationsSection').style.display = 'none';
+                return;
+            }
+
+            // Calculate minutes per category
+            const categoryMinutes = {
+                social: 0,
+                ai: 0,
+                parasocial: 0,
+                async: 0
+            };
+
+            debtActivities.forEach(activity => {
+                const category = getCategoryForActivity(activity.name);
+                if (category) {
+                    categoryMinutes[category] += activity.minutes;
+                }
+            });
+
+            const totalDebtMinutes = Object.values(categoryMinutes).reduce((sum, m) => sum + m, 0);
+
+            if (totalDebtMinutes === 0) {
+                document.getElementById('recommendationsSection').style.display = 'none';
+                return;
+            }
+
+            // Show breakdown
+            let breakdownHTML = '<div class="debt-breakdown">';
+            for (const [category, minutes] of Object.entries(categoryMinutes)) {
+                if (minutes > 0) {
+                    const percentage = ((minutes / totalDebtMinutes) * 100).toFixed(0);
+                    breakdownHTML += `
+                        <div class="breakdown-card">
+                            <div class="breakdown-label">${recommendations[category].label}</div>
+                            <div class="breakdown-value">${formatTime(minutes)}</div>
+                            <div class="breakdown-percentage">${percentage}% of total debt</div>
+                        </div>
+                    `;
+                }
+            }
+            breakdownHTML += '</div>';
+            document.getElementById('debtBreakdown').innerHTML = breakdownHTML;
+
+            // Generate recommendations based on top categories
+            const sortedCategories = Object.entries(categoryMinutes)
+                .filter(([_, minutes]) => minutes > 0)
+                .sort(([_, a], [__, b]) => b - a);
+
+            let recsHTML = '';
+            sortedCategories.forEach(([category, minutes]) => {
+                const rec = recommendations[category];
+                const suggestedHours = Math.ceil(minutes / 60);
+                
+                recsHTML += `
+                    <div class="recommendation-card">
+                        <div class="recommendation-category">${rec.label}</div>
+                        <div class="recommendation-text">
+                            ${rec.description}
+                        </div>
+                        <div class="recommendation-text">
+                            <strong>Suggested offset: ${suggestedHours} hour${suggestedHours !== 1 ? 's' : ''}</strong>
+                        </div>
+                        <div class="recommendation-suggestions">
+                            ${rec.suggestions.map(s => `<span class="suggestion-tag">${s}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('recommendations').innerHTML = recsHTML;
+            document.getElementById('recommendationsSection').style.display = 'block';
+        }
+
+        function setActivityType(type) {
+            currentType = type;
+            
+            // Update button styles
+            document.getElementById('debtBtn').classList.toggle('active', type === 'debt');
+            document.getElementById('offsetBtn').classList.toggle('active', type === 'offset');
+            
+            // Show/hide appropriate option groups
+            const debtGroups = ['socialGroup', 'aiGroup', 'commGroup', 'contentGroup'];
+            const offsetGroups = ['inPersonGroup', 'thirdSpaceGroup', 'gatheringGroup'];
+            
+            debtGroups.forEach(id => {
+                document.getElementById(id).style.display = type === 'debt' ? 'block' : 'none';
+            });
+            
+            offsetGroups.forEach(id => {
+                document.getElementById(id).style.display = type === 'offset' ? 'block' : 'none';
+            });
+            
+            // Reset selection
+            document.getElementById('activity').selectedIndex = 0;
+        }
+
+        function logActivity(event) {
+            event.preventDefault();
+            
+            const activity = document.getElementById('activity').value;
+            const hours = parseInt(document.getElementById('hours').value);
+            const minutes = parseInt(document.getElementById('minutes').value);
+            
+            if (hours === 0 && minutes === 0) {
+                alert('Please enter a duration greater than 0');
+                return;
+            }
+            
+            const totalMinutes = (hours * 60) + minutes;
+            
+            activities.push({
+                id: Date.now(),
+                name: activity,
+                type: currentType,
+                minutes: totalMinutes,
+                timestamp: new Date().toISOString()
+            });
+            
+            saveData();
+            updateDisplay();
+            
+            // Reset form
+            document.getElementById('hours').value = 0;
+            document.getElementById('minutes').value = 0;
+        }
+
+        function deleteActivity(id) {
+            activities = activities.filter(a => a.id !== id);
+            saveData();
+            updateDisplay();
+        }
+
+        function saveData() {
+            localStorage.setItem('connectionActivities', JSON.stringify(activities));
+        }
+
+        function formatTime(minutes) {
+            const h = Math.floor(minutes / 60);
+            const m = minutes % 60;
+            return `${h}h ${m}m`;
+        }
+
+        function updateDisplay() {
+            const debtMinutes = activities
+                .filter(a => a.type === 'debt')
+                .reduce((sum, a) => sum + a.minutes, 0);
+            
+            const offsetMinutes = activities
+                .filter(a => a.type === 'offset')
+                .reduce((sum, a) => sum + a.minutes, 0);
+            
+            const netMinutes = offsetMinutes - debtMinutes;
+            
+            document.getElementById('totalDebt').textContent = formatTime(debtMinutes);
+            document.getElementById('totalOffset').textContent = formatTime(offsetMinutes);
+            
+            const netBalance = document.getElementById('netBalance');
+            netBalance.textContent = formatTime(Math.abs(netMinutes));
+            netBalance.classList.remove('positive', 'negative');
+            
+            if (netMinutes > 0) {
+                netBalance.classList.add('positive');
+                netBalance.textContent = '+' + netBalance.textContent;
+            } else if (netMinutes < 0) {
+                netBalance.classList.add('negative');
+                netBalance.textContent = '-' + netBalance.textContent;
+            }
+            
+            // Update visual bar
+            const total = debtMinutes + offsetMinutes;
+            const percentage = total === 0 ? 50 : (offsetMinutes / total) * 100;
+            document.getElementById('balanceBar').style.width = percentage + '%';
+            
+            // Generate recommendations
+            generateRecommendations();
+            
+            // Update log list
+            const logList = document.getElementById('logList');
+            if (activities.length === 0) {
+                logList.innerHTML = '<div class="empty-state">No activities logged yet. Start tracking your connection patterns.</div>';
+            } else {
+                logList.innerHTML = activities
+                    .sort((a, b) => b.timestamp.localeCompare(a.timestamp))
+                    .map(activity => `
+                        <div class="log-entry">
+                            <div class="log-entry-info">
+                                <div class="log-entry-name">${activity.name}</div>
+                                <div class="log-entry-details">
+                                    ${activity.type === 'debt' ? 'Connecting time spent' : 'Connection Offset'} • 
+                                    ${new Date(activity.timestamp).toLocaleDateString()} ${new Date(activity.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                                </div>
+                            </div>
+                            <span class="log-entry-duration ${activity.type}">${formatTime(activity.minutes)}</span>
+                            <button class="delete-btn" onclick="deleteActivity(${activity.id})">Delete</button>
+                        </div>
+                    `).join('');
+            }
+        }
+
+        // Initialize with debt options visible
+        setActivityType('debt');
+    </script>
+</body>
+</html>
