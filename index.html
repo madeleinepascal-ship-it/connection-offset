@@ -134,16 +134,17 @@
         select, input {
             width: 100%;
             padding: 12px;
-            border: none;
+            border: 1px solid #333333;
             border-radius: 8px;
             font-size: 15px;
-            background: #000000;
+            background: #1a1a1a;
             color: #ffffff;
             transition: border-color 0.2s;
         }
 
         select:focus, input:focus {
-            outline: 1px solid #ffffff;
+            outline: none;
+            border-color: #ffffff;
         }
 
         .time-inputs {
@@ -403,55 +404,7 @@
                 <div>
                     <label for="activity">Activity</label>
                     <select id="activity" required>
-                        <!-- Debt options -->
-                        <optgroup label="Social Media" id="socialGroup">
-                            <option value="Instagram">Instagram</option>
-                            <option value="TikTok">TikTok</option>
-                            <option value="Facebook">Facebook</option>
-                            <option value="Twitter/X">Twitter/X</option>
-                            <option value="LinkedIn">LinkedIn</option>
-                            <option value="Reddit">Reddit</option>
-                        </optgroup>
-                        <optgroup label="AI Platforms" id="aiGroup">
-                            <option value="ChatGPT">ChatGPT</option>
-                            <option value="Claude">Claude</option>
-                            <option value="Character.ai">Character.ai</option>
-                            <option value="Other AI">Other AI Tool</option>
-                        </optgroup>
-                        <optgroup label="Communication" id="commGroup">
-                            <option value="Slack">Slack</option>
-                            <option value="Email">Email</option>
-                            <option value="Teams">Microsoft Teams</option>
-                            <option value="Discord">Discord</option>
-                        </optgroup>
-                        <optgroup label="Content/Entertainment" id="contentGroup">
-                            <option value="YouTube">YouTube</option>
-                            <option value="Netflix/Streaming">Netflix/Streaming</option>
-                            <option value="Podcasts">Podcasts</option>
-                            <option value="Twitch">Twitch</option>
-                        </optgroup>
-                        <!-- Offset options (hidden by default) -->
-                        <optgroup label="In-Person Connection" id="inPersonGroup" style="display:none;">
-                            <option value="Face-to-face hangout">Face-to-face hangout</option>
-                            <option value="Meal with others">Meal with others</option>
-                            <option value="Phone/video call">Phone/video call (two-way)</option>
-                            <option value="Community event">Community event</option>
-                            <option value="Class/workshop">Class/workshop</option>
-                        </optgroup>
-                        <optgroup label="Third Spaces" id="thirdSpaceGroup" style="display:none;">
-                            <option value="Café/coffee shop">Café/coffee shop</option>
-                            <option value="Library">Library</option>
-                            <option value="Park">Park</option>
-                            <option value="Gym/fitness">Gym/fitness class</option>
-                            <option value="Co-working space">Co-working space</option>
-                        </optgroup>
-                        <optgroup label="Gatherings" id="gatheringGroup" style="display:none;">
-                            <option value="Party/social event">Party/social event</option>
-                            <option value="Religious service">Religious service</option>
-                            <option value="Volunteer work">Volunteer work</option>
-                            <option value="Sports/recreation">Sports/recreation with others</option>
-                            <option value="Creative activity">Creative activity with others</option>
-                        </optgroup>
+                        <!-- Options populated by JavaScript -->
                     </select>
                 </div>
 
@@ -639,20 +592,67 @@
             document.getElementById('debtBtn').classList.toggle('active', type === 'debt');
             document.getElementById('offsetBtn').classList.toggle('active', type === 'offset');
 
-            // Show/hide appropriate option groups
-            const debtGroups = ['socialGroup', 'aiGroup', 'commGroup', 'contentGroup'];
-            const offsetGroups = ['inPersonGroup', 'thirdSpaceGroup', 'gatheringGroup'];
+            const activitySelect = document.getElementById('activity');
 
-            debtGroups.forEach(id => {
-                document.getElementById(id).style.display = type === 'debt' ? 'block' : 'none';
-            });
+            // Clear all options
+            activitySelect.innerHTML = '';
 
-            offsetGroups.forEach(id => {
-                document.getElementById(id).style.display = type === 'offset' ? 'block' : 'none';
-            });
-
-            // Reset selection
-            document.getElementById('activity').selectedIndex = 0;
+            if (type === 'debt') {
+                // Add debt options
+                activitySelect.innerHTML = `
+                    <optgroup label="Social Media">
+                        <option value="Instagram">Instagram</option>
+                        <option value="TikTok">TikTok</option>
+                        <option value="Facebook">Facebook</option>
+                        <option value="Twitter/X">Twitter/X</option>
+                        <option value="LinkedIn">LinkedIn</option>
+                        <option value="Reddit">Reddit</option>
+                    </optgroup>
+                    <optgroup label="AI Platforms">
+                        <option value="ChatGPT">ChatGPT</option>
+                        <option value="Claude">Claude</option>
+                        <option value="Character.ai">Character.ai</option>
+                        <option value="Other AI">Other AI Tool</option>
+                    </optgroup>
+                    <optgroup label="Communication">
+                        <option value="Slack">Slack</option>
+                        <option value="Email">Email</option>
+                        <option value="Teams">Microsoft Teams</option>
+                        <option value="Discord">Discord</option>
+                    </optgroup>
+                    <optgroup label="Content/Entertainment">
+                        <option value="YouTube">YouTube</option>
+                        <option value="Netflix/Streaming">Netflix/Streaming</option>
+                        <option value="Podcasts">Podcasts</option>
+                        <option value="Twitch">Twitch</option>
+                    </optgroup>
+                `;
+            } else {
+                // Add offset options
+                activitySelect.innerHTML = `
+                    <optgroup label="In-Person Connection">
+                        <option value="Face-to-face hangout">Face-to-face hangout</option>
+                        <option value="Meal with others">Meal with others</option>
+                        <option value="Phone/video call">Phone/video call (two-way)</option>
+                        <option value="Community event">Community event</option>
+                        <option value="Class/workshop">Class/workshop</option>
+                    </optgroup>
+                    <optgroup label="Third Spaces">
+                        <option value="Café/coffee shop">Café/coffee shop</option>
+                        <option value="Library">Library</option>
+                        <option value="Park">Park</option>
+                        <option value="Gym/fitness">Gym/fitness class</option>
+                        <option value="Co-working space">Co-working space</option>
+                    </optgroup>
+                    <optgroup label="Gatherings">
+                        <option value="Party/social event">Party/social event</option>
+                        <option value="Religious service">Religious service</option>
+                        <option value="Volunteer work">Volunteer work</option>
+                        <option value="Sports/recreation">Sports/recreation with others</option>
+                        <option value="Creative activity">Creative activity with others</option>
+                    </optgroup>
+                `;
+            }
         }
 
         function logActivity(event) {
