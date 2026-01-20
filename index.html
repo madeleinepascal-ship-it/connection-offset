@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Personal Connection Offset Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,9 +15,9 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: #fafafa;
-            color: #1a1a1a;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #000000;
+            color: #ffffff;
             padding: 20px;
             line-height: 1.6;
         }
@@ -29,22 +32,27 @@
         }
 
         h1 {
-            font-size: 28px;
+            font-size: 48px;
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 16px;
+            line-height: 1.2;
+            color: #ffffff;
         }
 
         .subtitle {
-            color: #666;
-            font-size: 15px;
+            color: #999999;
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 8px;
         }
 
         .balance-display {
-            background: white;
+            background: transparent;
             border-radius: 12px;
             padding: 32px;
             margin-bottom: 32px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            box-shadow: none;
+            border: none;
         }
 
         .balance-row {
@@ -94,17 +102,19 @@
         }
 
         .logging-section {
-            background: white;
+            background: transparent;
             border-radius: 12px;
             padding: 32px;
             margin-bottom: 32px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            box-shadow: none;
+            border: none;
         }
 
         h2 {
             font-size: 20px;
             margin-bottom: 20px;
             font-weight: 600;
+            color: #ffffff;
         }
 
         .log-form {
@@ -118,22 +128,22 @@
             font-size: 14px;
             font-weight: 500;
             margin-bottom: 6px;
-            color: #333;
+            color: #cccccc;
         }
 
         select, input {
             width: 100%;
             padding: 12px;
-            border: 1.5px solid #e0e0e0;
+            border: none;
             border-radius: 8px;
             font-size: 15px;
-            background: white;
+            background: #000000;
+            color: #ffffff;
             transition: border-color 0.2s;
         }
 
         select:focus, input:focus {
-            outline: none;
-            border-color: #666;
+            outline: 1px solid #ffffff;
         }
 
         .time-inputs {
@@ -143,8 +153,8 @@
         }
 
         button {
-            background: #1a1a1a;
-            color: white;
+            background: #ffffff;
+            color: #000000;
             border: none;
             padding: 14px 24px;
             border-radius: 8px;
@@ -155,7 +165,7 @@
         }
 
         button:hover {
-            background: #333;
+            background: #e0e0e0;
         }
 
         button:active {
@@ -167,13 +177,14 @@
         }
 
         .log-entry {
-            background: #f8f8f8;
+            background: transparent;
             padding: 16px;
             border-radius: 8px;
             margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border: none;
         }
 
         .log-entry-info {
@@ -183,11 +194,12 @@
         .log-entry-name {
             font-weight: 500;
             margin-bottom: 4px;
+            color: #ffffff;
         }
 
         .log-entry-details {
             font-size: 13px;
-            color: #666;
+            color: #999999;
         }
 
         .log-entry-duration {
@@ -214,7 +226,7 @@
         .empty-state {
             text-align: center;
             padding: 40px;
-            color: #999;
+            color: #666666;
         }
 
         .type-toggle {
@@ -226,22 +238,24 @@
         .type-btn {
             flex: 1;
             padding: 12px;
-            background: #f0f0f0;
-            border: 2px solid transparent;
+            background: transparent;
+            border: none;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s;
             font-weight: 500;
+            color: #999999;
         }
 
         .type-btn.active {
-            background: white;
-            border-color: #1a1a1a;
+            background: transparent;
+            border: none;
+            color: #ffffff;
         }
 
         .visual-bar {
             height: 8px;
-            background: #f0f0f0;
+            background: transparent;
             border-radius: 4px;
             overflow: hidden;
             margin-top: 8px;
@@ -255,18 +269,20 @@
         }
 
         .recommendations-section {
-            background: white;
+            background: transparent;
             border-radius: 12px;
             padding: 32px;
             margin-bottom: 32px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            box-shadow: none;
+            border: none;
         }
 
         .recommendation-card {
-            background: #f8f8f8;
+            background: transparent;
             padding: 20px;
             border-radius: 8px;
             margin-bottom: 16px;
+            border: none;
         }
 
         .recommendation-card:last-child {
@@ -286,6 +302,7 @@
             font-size: 15px;
             line-height: 1.6;
             margin-bottom: 12px;
+            color: #cccccc;
         }
 
         .recommendation-suggestions {
@@ -296,12 +313,12 @@
         }
 
         .suggestion-tag {
-            background: white;
+            background: transparent;
             padding: 8px 14px;
             border-radius: 6px;
             font-size: 13px;
-            color: #333;
-            border: 1.5px solid #e0e0e0;
+            color: #cccccc;
+            border: none;
         }
 
         .debt-breakdown {
@@ -312,14 +329,15 @@
         }
 
         .breakdown-card {
-            background: #f8f8f8;
+            background: transparent;
             padding: 16px;
             border-radius: 8px;
+            border: none;
         }
 
         .breakdown-label {
             font-size: 12px;
-            color: #666;
+            color: #999999;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             margin-bottom: 6px;
@@ -333,7 +351,7 @@
 
         .breakdown-percentage {
             font-size: 13px;
-            color: #999;
+            color: #666666;
             margin-top: 4px;
         }
     </style>
@@ -372,7 +390,7 @@
 
         <div class="logging-section">
             <h2>Log Activity</h2>
-            
+
             <div class="type-toggle">
                 <div class="type-btn active" onclick="setActivityType('debt')" id="debtBtn">
                     Connecting time spent
@@ -540,7 +558,7 @@
 
         function generateRecommendations() {
             const debtActivities = activities.filter(a => a.type === 'debt');
-            
+
             if (debtActivities.length === 0) {
                 document.getElementById('recommendationsSection').style.display = 'none';
                 return;
@@ -594,7 +612,7 @@
             sortedCategories.forEach(([category, minutes]) => {
                 const rec = recommendations[category];
                 const suggestedHours = Math.ceil(minutes / 60);
-                
+
                 recsHTML += `
                     <div class="recommendation-card">
                         <div class="recommendation-category">${rec.label}</div>
@@ -617,41 +635,41 @@
 
         function setActivityType(type) {
             currentType = type;
-            
+
             // Update button styles
             document.getElementById('debtBtn').classList.toggle('active', type === 'debt');
             document.getElementById('offsetBtn').classList.toggle('active', type === 'offset');
-            
+
             // Show/hide appropriate option groups
             const debtGroups = ['socialGroup', 'aiGroup', 'commGroup', 'contentGroup'];
             const offsetGroups = ['inPersonGroup', 'thirdSpaceGroup', 'gatheringGroup'];
-            
+
             debtGroups.forEach(id => {
                 document.getElementById(id).style.display = type === 'debt' ? 'block' : 'none';
             });
-            
+
             offsetGroups.forEach(id => {
                 document.getElementById(id).style.display = type === 'offset' ? 'block' : 'none';
             });
-            
+
             // Reset selection
             document.getElementById('activity').selectedIndex = 0;
         }
 
         function logActivity(event) {
             event.preventDefault();
-            
+
             const activity = document.getElementById('activity').value;
             const hours = parseInt(document.getElementById('hours').value);
             const minutes = parseInt(document.getElementById('minutes').value);
-            
+
             if (hours === 0 && minutes === 0) {
                 alert('Please enter a duration greater than 0');
                 return;
             }
-            
+
             const totalMinutes = (hours * 60) + minutes;
-            
+
             activities.push({
                 id: Date.now(),
                 name: activity,
@@ -659,10 +677,10 @@
                 minutes: totalMinutes,
                 timestamp: new Date().toISOString()
             });
-            
+
             saveData();
             updateDisplay();
-            
+
             // Reset form
             document.getElementById('hours').value = 0;
             document.getElementById('minutes').value = 0;
@@ -688,20 +706,20 @@
             const debtMinutes = activities
                 .filter(a => a.type === 'debt')
                 .reduce((sum, a) => sum + a.minutes, 0);
-            
+
             const offsetMinutes = activities
                 .filter(a => a.type === 'offset')
                 .reduce((sum, a) => sum + a.minutes, 0);
-            
+
             const netMinutes = offsetMinutes - debtMinutes;
-            
+
             document.getElementById('totalDebt').textContent = formatTime(debtMinutes);
             document.getElementById('totalOffset').textContent = formatTime(offsetMinutes);
-            
+
             const netBalance = document.getElementById('netBalance');
             netBalance.textContent = formatTime(Math.abs(netMinutes));
             netBalance.classList.remove('positive', 'negative');
-            
+
             if (netMinutes > 0) {
                 netBalance.classList.add('positive');
                 netBalance.textContent = '+' + netBalance.textContent;
@@ -709,15 +727,15 @@
                 netBalance.classList.add('negative');
                 netBalance.textContent = '-' + netBalance.textContent;
             }
-            
+
             // Update visual bar
             const total = debtMinutes + offsetMinutes;
             const percentage = total === 0 ? 50 : (offsetMinutes / total) * 100;
             document.getElementById('balanceBar').style.width = percentage + '%';
-            
+
             // Generate recommendations
             generateRecommendations();
-            
+
             // Update log list
             const logList = document.getElementById('logList');
             if (activities.length === 0) {
@@ -730,7 +748,7 @@
                             <div class="log-entry-info">
                                 <div class="log-entry-name">${activity.name}</div>
                                 <div class="log-entry-details">
-                                    ${activity.type === 'debt' ? 'Connecting time spent' : 'Connection Offset'} • 
+                                    ${activity.type === 'debt' ? 'Connecting time spent' : 'Connection Offset'} •
                                     ${new Date(activity.timestamp).toLocaleDateString()} ${new Date(activity.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                                 </div>
                             </div>
