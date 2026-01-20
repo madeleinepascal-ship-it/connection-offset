@@ -402,9 +402,60 @@
 
             <form class="log-form" onsubmit="logActivity(event)">
                 <div>
-                    <label for="activity">Activity</label>
-                    <select id="activity" required>
-                        <!-- Options populated by JavaScript -->
+                    <label for="debtActivity" id="debtLabel">Activity</label>
+                    <label for="offsetActivity" id="offsetLabel" style="display: none;">Activity</label>
+
+                    <select id="debtActivity" required>
+                        <optgroup label="Social Media">
+                            <option value="Instagram">Instagram</option>
+                            <option value="TikTok">TikTok</option>
+                            <option value="Facebook">Facebook</option>
+                            <option value="Twitter/X">Twitter/X</option>
+                            <option value="LinkedIn">LinkedIn</option>
+                            <option value="Reddit">Reddit</option>
+                        </optgroup>
+                        <optgroup label="AI Platforms">
+                            <option value="ChatGPT">ChatGPT</option>
+                            <option value="Claude">Claude</option>
+                            <option value="Character.ai">Character.ai</option>
+                            <option value="Other AI">Other AI Tool</option>
+                        </optgroup>
+                        <optgroup label="Communication">
+                            <option value="Slack">Slack</option>
+                            <option value="Email">Email</option>
+                            <option value="Teams">Microsoft Teams</option>
+                            <option value="Discord">Discord</option>
+                        </optgroup>
+                        <optgroup label="Content/Entertainment">
+                            <option value="YouTube">YouTube</option>
+                            <option value="Netflix/Streaming">Netflix/Streaming</option>
+                            <option value="Podcasts">Podcasts</option>
+                            <option value="Twitch">Twitch</option>
+                        </optgroup>
+                    </select>
+
+                    <select id="offsetActivity" required style="display: none;">
+                        <optgroup label="In-Person Connection">
+                            <option value="Face-to-face hangout">Face-to-face hangout</option>
+                            <option value="Meal with others">Meal with others</option>
+                            <option value="Phone/video call">Phone/video call (two-way)</option>
+                            <option value="Community event">Community event</option>
+                            <option value="Class/workshop">Class/workshop</option>
+                        </optgroup>
+                        <optgroup label="Third Spaces">
+                            <option value="Café/coffee shop">Café/coffee shop</option>
+                            <option value="Library">Library</option>
+                            <option value="Park">Park</option>
+                            <option value="Gym/fitness">Gym/fitness class</option>
+                            <option value="Co-working space">Co-working space</option>
+                        </optgroup>
+                        <optgroup label="Gatherings">
+                            <option value="Party/social event">Party/social event</option>
+                            <option value="Religious service">Religious service</option>
+                            <option value="Volunteer work">Volunteer work</option>
+                            <option value="Sports/recreation">Sports/recreation with others</option>
+                            <option value="Creative activity">Creative activity with others</option>
+                        </optgroup>
                     </select>
                 </div>
 
@@ -592,73 +643,37 @@
             document.getElementById('debtBtn').classList.toggle('active', type === 'debt');
             document.getElementById('offsetBtn').classList.toggle('active', type === 'offset');
 
-            const activitySelect = document.getElementById('activity');
-
-            // Clear all options
-            activitySelect.innerHTML = '';
+            // Show/hide appropriate dropdowns
+            const debtActivity = document.getElementById('debtActivity');
+            const offsetActivity = document.getElementById('offsetActivity');
+            const debtLabel = document.getElementById('debtLabel');
+            const offsetLabel = document.getElementById('offsetLabel');
 
             if (type === 'debt') {
-                // Add debt options
-                activitySelect.innerHTML = `
-                    <optgroup label="Social Media">
-                        <option value="Instagram">Instagram</option>
-                        <option value="TikTok">TikTok</option>
-                        <option value="Facebook">Facebook</option>
-                        <option value="Twitter/X">Twitter/X</option>
-                        <option value="LinkedIn">LinkedIn</option>
-                        <option value="Reddit">Reddit</option>
-                    </optgroup>
-                    <optgroup label="AI Platforms">
-                        <option value="ChatGPT">ChatGPT</option>
-                        <option value="Claude">Claude</option>
-                        <option value="Character.ai">Character.ai</option>
-                        <option value="Other AI">Other AI Tool</option>
-                    </optgroup>
-                    <optgroup label="Communication">
-                        <option value="Slack">Slack</option>
-                        <option value="Email">Email</option>
-                        <option value="Teams">Microsoft Teams</option>
-                        <option value="Discord">Discord</option>
-                    </optgroup>
-                    <optgroup label="Content/Entertainment">
-                        <option value="YouTube">YouTube</option>
-                        <option value="Netflix/Streaming">Netflix/Streaming</option>
-                        <option value="Podcasts">Podcasts</option>
-                        <option value="Twitch">Twitch</option>
-                    </optgroup>
-                `;
+                debtActivity.style.display = 'block';
+                debtActivity.required = true;
+                debtLabel.style.display = 'block';
+
+                offsetActivity.style.display = 'none';
+                offsetActivity.required = false;
+                offsetLabel.style.display = 'none';
             } else {
-                // Add offset options
-                activitySelect.innerHTML = `
-                    <optgroup label="In-Person Connection">
-                        <option value="Face-to-face hangout">Face-to-face hangout</option>
-                        <option value="Meal with others">Meal with others</option>
-                        <option value="Phone/video call">Phone/video call (two-way)</option>
-                        <option value="Community event">Community event</option>
-                        <option value="Class/workshop">Class/workshop</option>
-                    </optgroup>
-                    <optgroup label="Third Spaces">
-                        <option value="Café/coffee shop">Café/coffee shop</option>
-                        <option value="Library">Library</option>
-                        <option value="Park">Park</option>
-                        <option value="Gym/fitness">Gym/fitness class</option>
-                        <option value="Co-working space">Co-working space</option>
-                    </optgroup>
-                    <optgroup label="Gatherings">
-                        <option value="Party/social event">Party/social event</option>
-                        <option value="Religious service">Religious service</option>
-                        <option value="Volunteer work">Volunteer work</option>
-                        <option value="Sports/recreation">Sports/recreation with others</option>
-                        <option value="Creative activity">Creative activity with others</option>
-                    </optgroup>
-                `;
+                debtActivity.style.display = 'none';
+                debtActivity.required = false;
+                debtLabel.style.display = 'none';
+
+                offsetActivity.style.display = 'block';
+                offsetActivity.required = true;
+                offsetLabel.style.display = 'block';
             }
         }
 
         function logActivity(event) {
             event.preventDefault();
 
-            const activity = document.getElementById('activity').value;
+            const activity = currentType === 'debt'
+                ? document.getElementById('debtActivity').value
+                : document.getElementById('offsetActivity').value;
             const hours = parseInt(document.getElementById('hours').value);
             const minutes = parseInt(document.getElementById('minutes').value);
 
