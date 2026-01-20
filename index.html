@@ -389,22 +389,11 @@
         </div>
 
         <div class="logging-section">
-            <h2>Log Activity</h2>
+            <h2>Connecting time spent</h2>
 
-            <div class="type-toggle">
-                <div class="type-btn active" onclick="setActivityType('debt')" id="debtBtn">
-                    Connecting time spent
-                </div>
-                <div class="type-btn" onclick="setActivityType('offset')" id="offsetBtn">
-                    Connection Offset
-                </div>
-            </div>
-
-            <form class="log-form" onsubmit="logActivity(event)">
+            <form class="log-form" onsubmit="logDebtActivity(event)">
                 <div>
-                    <label for="debtActivity" id="debtLabel">Activity</label>
-                    <label for="offsetActivity" id="offsetLabel" style="display: none;">Activity</label>
-
+                    <label for="debtActivity">Activity</label>
                     <select id="debtActivity" required>
                         <optgroup label="Social Media">
                             <option value="Instagram">Instagram</option>
@@ -433,8 +422,30 @@
                             <option value="Twitch">Twitch</option>
                         </optgroup>
                     </select>
+                </div>
 
-                    <select id="offsetActivity" required style="display: none;">
+                <div class="time-inputs">
+                    <div>
+                        <label for="debtHours">Hours</label>
+                        <input type="number" id="debtHours" min="0" max="24" value="0" required>
+                    </div>
+                    <div>
+                        <label for="debtMinutes">Minutes</label>
+                        <input type="number" id="debtMinutes" min="0" max="59" value="0" required>
+                    </div>
+                </div>
+
+                <button type="submit">Log Connecting Time</button>
+            </form>
+        </div>
+
+        <div class="logging-section">
+            <h2>Connection Offset</h2>
+
+            <form class="log-form" onsubmit="logOffsetActivity(event)">
+                <div>
+                    <label for="offsetActivity">Activity</label>
+                    <select id="offsetActivity" required>
                         <optgroup label="In-Person Connection">
                             <option value="Face-to-face hangout">Face-to-face hangout</option>
                             <option value="Meal with others">Meal with others</option>
@@ -461,16 +472,16 @@
 
                 <div class="time-inputs">
                     <div>
-                        <label for="hours">Hours</label>
-                        <input type="number" id="hours" min="0" max="24" value="0" required>
+                        <label for="offsetHours">Hours</label>
+                        <input type="number" id="offsetHours" min="0" max="24" value="0" required>
                     </div>
                     <div>
-                        <label for="minutes">Minutes</label>
-                        <input type="number" id="minutes" min="0" max="59" value="0" required>
+                        <label for="offsetMinutes">Minutes</label>
+                        <input type="number" id="offsetMinutes" min="0" max="59" value="0" required>
                     </div>
                 </div>
 
-                <button type="submit">Log Activity</button>
+                <button type="submit">Log Connection Offset</button>
             </form>
 
             <div class="activity-log">
@@ -484,7 +495,6 @@
 
     <script>
         let activities = [];
-        let currentType = 'debt';
 
         // Categorize activities into debt types
         const debtCategories = {
@@ -636,46 +646,12 @@
             document.getElementById('recommendationsSection').style.display = 'block';
         }
 
-        function setActivityType(type) {
-            currentType = type;
-
-            // Update button styles
-            document.getElementById('debtBtn').classList.toggle('active', type === 'debt');
-            document.getElementById('offsetBtn').classList.toggle('active', type === 'offset');
-
-            // Show/hide appropriate dropdowns
-            const debtActivity = document.getElementById('debtActivity');
-            const offsetActivity = document.getElementById('offsetActivity');
-            const debtLabel = document.getElementById('debtLabel');
-            const offsetLabel = document.getElementById('offsetLabel');
-
-            if (type === 'debt') {
-                debtActivity.style.display = 'block';
-                debtActivity.required = true;
-                debtLabel.style.display = 'block';
-
-                offsetActivity.style.display = 'none';
-                offsetActivity.required = false;
-                offsetLabel.style.display = 'none';
-            } else {
-                debtActivity.style.display = 'none';
-                debtActivity.required = false;
-                debtLabel.style.display = 'none';
-
-                offsetActivity.style.display = 'block';
-                offsetActivity.required = true;
-                offsetLabel.style.display = 'block';
-            }
-        }
-
-        function logActivity(event) {
+        function logDebtActivity(event) {
             event.preventDefault();
 
-            const activity = currentType === 'debt'
-                ? document.getElementById('debtActivity').value
-                : document.getElementById('offsetActivity').value;
-            const hours = parseInt(document.getElementById('hours').value);
-            const minutes = parseInt(document.getElementById('minutes').value);
+            const activity = document.getElementById('debtActivity').value;
+            const hours = parseInt(document.getElementById('debtHours').value);
+            const minutes = parseInt(document.getElementById('debtMinutes').value);
 
             if (hours === 0 && minutes === 0) {
                 alert('Please enter a duration greater than 0');
@@ -687,7 +663,7 @@
             activities.push({
                 id: Date.now(),
                 name: activity,
-                type: currentType,
+                type: 'debt',
                 minutes: totalMinutes,
                 timestamp: new Date().toISOString()
             });
@@ -696,8 +672,38 @@
             updateDisplay();
 
             // Reset form
-            document.getElementById('hours').value = 0;
-            document.getElementById('minutes').value = 0;
+            document.getElementById('debtHours').value = 0;
+            document.getElementById('debtMinutes').value = 0;
+        }
+
+        function logOffsetActivity(event) {
+            event.preventDefault();
+
+            const activity = document.getElementById('offsetActivity').value;
+            const hours = parseInt(document.getElementById('offsetHours').value);
+            const minutes = parseInt(document.getElementById('offsetMinutes').value);
+
+            if (hours === 0 && minutes === 0) {
+                alert('Please enter a duration greater than 0');
+                return;
+            }
+
+            const totalMinutes = (hours * 60) + minutes;
+
+            activities.push({
+                id: Date.now(),
+                name: activity,
+                type: 'offset',
+                minutes: totalMinutes,
+                timestamp: new Date().toISOString()
+            });
+
+            saveData();
+            updateDisplay();
+
+            // Reset form
+            document.getElementById('offsetHours').value = 0;
+            document.getElementById('offsetMinutes').value = 0;
         }
 
         function deleteActivity(id) {
@@ -773,8 +779,6 @@
             }
         }
 
-        // Initialize with debt options visible
-        setActivityType('debt');
     </script>
 </body>
 </html>
