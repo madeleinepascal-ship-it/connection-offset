@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connection Tracking</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            text-align: center;
+        }
+
+        header {
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-size: 64px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            line-height: 1.2;
+            color: #ffffff;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.2);
+        }
+
+        .tagline {
+            font-size: 22px;
+            color: rgba(255,255,255,0.9);
+            font-weight: 500;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .trackers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 32px;
+            margin-top: 60px;
+        }
+
+        .tracker-card {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 40px;
+            border: 2px solid rgba(255,255,255,0.2);
+            transition: all 0.3s;
+            text-decoration: none;
+            color: #ffffff;
+            display: block;
+        }
+
+        .tracker-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border-color: rgba(255,255,255,0.4);
+        }
+
+        .tracker-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .tracker-title {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .tracker-description {
+            font-size: 16px;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 24px;
+        }
+
+        .tracker-features {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 24px;
+        }
+
+        .tracker-features li {
+            font-size: 14px;
+            padding: 8px 0;
+            color: rgba(255,255,255,0.7);
+            position: relative;
+            padding-left: 24px;
+        }
+
+        .tracker-features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #00ff88;
+            font-weight: bold;
+        }
+
+        .tracker-button {
+            background: #ffffff;
+            color: #667eea;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .tracker-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .footer {
+            margin-top: 60px;
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+        }
+
+        @media (max-width: 900px) {
+            .trackers-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 48px;
+            }
+
+            .tagline {
+                font-size: 18px;
+            }
+
+            .tracker-card {
+                padding: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Connection Tracking</h1>
+            <p class="tagline">Choose your approach to tracking and improving your real human connections</p>
+        </header>
+
+        <div class="trackers-grid">
+            <a href="maxxing.html" class="tracker-card">
+                <div class="tracker-icon">🎯</div>
+                <h2 class="tracker-title">Connection Maxxing</h2>
+                <p class="tracker-description">
+                    Track real human connections like you track steps. Close your daily rings, build streaks, and level up your social life.
+                </p>
+                <ul class="tracker-features">
+                    <li>3 daily connection rings to close</li>
+                    <li>Points, levels, and achievements</li>
+                    <li>Streak tracking</li>
+                    <li>Gamified experience</li>
+                    <li>Focus on maximizing connections</li>
+                </ul>
+                <span class="tracker-button">Start Maxxing</span>
+            </a>
+
+            <a href="index.html" class="tracker-card">
+                <div class="tracker-icon">⚖️</div>
+                <h2 class="tracker-title">Connection Offset</h2>
+                <p class="tracker-description">
+                    Balance your digital connection debt with real-world connection. Track both sides and get personalized recommendations.
+                </p>
+                <ul class="tracker-features">
+                    <li>Track digital vs. real connection</li>
+                    <li>Calculate your net balance</li>
+                    <li>Personalized offset recommendations</li>
+                    <li>Category-based insights</li>
+                    <li>Focus on balancing your life</li>
+                </ul>
+                <span class="tracker-button">Balance Now</span>
+            </a>
+        </div>
+
+        <div class="footer">
+            <p>Both trackers save your data locally in your browser</p>
+        </div>
+    </div>
+</body>
+</html>
