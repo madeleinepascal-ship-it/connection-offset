@@ -379,30 +379,6 @@
             <p class="subtitle">Sure, you spend a lot of time 'connecting'. But maybe it's time to offset that with real connection. Think of this as almost like a carbon footprint - but for connection. It's simple - track time spent connecting to apps and AI and other social stuffs, and calculate your real-life offset in real-time.</p>
         </header>
 
-        <div class="balance-display">
-            <div class="balance-row">
-                <span class="balance-label">Time spent 'connected'</span>
-                <span class="balance-value debt" id="totalDebt">0h 0m</span>
-            </div>
-            <div class="balance-row">
-                <span class="balance-label">Connection Offset</span>
-                <span class="balance-value offset" id="totalOffset">0h 0m</span>
-            </div>
-            <div class="balance-row">
-                <span class="balance-label">Net Balance</span>
-                <span class="balance-value net-balance" id="netBalance">0h 0m</span>
-            </div>
-            <div class="visual-bar">
-                <div class="visual-bar-fill" id="balanceBar" style="width: 50%"></div>
-            </div>
-        </div>
-
-        <div class="recommendations-section" id="recommendationsSection" style="display: none;">
-            <h2>Your Personalized Offset Recommendations</h2>
-            <div id="debtBreakdown"></div>
-            <div id="recommendations"></div>
-        </div>
-
         <div class="logging-section">
             <h2>Connecting time spent</h2>
 
@@ -505,6 +481,30 @@
                     <div class="empty-state">No activities logged yet. Start tracking your connection patterns.</div>
                 </div>
             </div>
+        </div>
+
+        <div class="balance-display">
+            <div class="balance-row">
+                <span class="balance-label">Time spent 'connected'</span>
+                <span class="balance-value debt" id="totalDebt">0h 0m</span>
+            </div>
+            <div class="balance-row">
+                <span class="balance-label">Connection Offset</span>
+                <span class="balance-value offset" id="totalOffset">0h 0m</span>
+            </div>
+            <div class="balance-row">
+                <span class="balance-label">Net Balance</span>
+                <span class="balance-value net-balance" id="netBalance">0h 0m</span>
+            </div>
+            <div class="visual-bar">
+                <div class="visual-bar-fill" id="balanceBar" style="width: 50%"></div>
+            </div>
+        </div>
+
+        <div class="recommendations-section" id="recommendationsSection" style="display: none;">
+            <h2>Your Personalized Offset Recommendations</h2>
+            <div id="debtBreakdown"></div>
+            <div id="recommendations"></div>
         </div>
     </div>
 
